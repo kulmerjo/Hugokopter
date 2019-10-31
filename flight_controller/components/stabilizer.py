@@ -2,7 +2,7 @@ from gyroscope import Gyroscope
 from pid import PID
 
 
-class Stabilizer():
+class Stabilizer:
     GYROSCOPE_ADDRESS = 0x68
 
     MAX_ROT_X = 0.2
@@ -17,7 +17,7 @@ class Stabilizer():
             self._gyroscope.init()
         except IOError:
             print("Cannot init gyroscope")
-        self._pitch_pid = PID(3.5, 0, 3.1)
+        self._pitch_pid = PID(3.55, 0.01, 2.05)
         self._roll_pid = PID(1.8, 0.1, 0.7)
         self._target_rot_x = 0.0
         self._target_rot_y = 0.0

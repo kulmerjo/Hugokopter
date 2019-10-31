@@ -3,7 +3,7 @@ import time
 
 class PID:
 
-    def __init__(self, kp=2.0, ki=0.0, kd=0.0, set_point=0.0, sample_time=0.01, output_max=1.0, output_min=-1.0):
+    def __init__(self, kp=2.0, ki=0.0, kd=0.0, set_point=0.0, sample_time=0.05, output_max=500.0, output_min=-500.0):
         self._kp, self._ki, self._kd = kp, ki, kd
         self._set_point = set_point
         self._output_max = output_max

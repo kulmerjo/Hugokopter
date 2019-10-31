@@ -3,12 +3,11 @@ from time import sleep
 
 if __name__ == "__main__":
     flightController = FlightController()
-    flightController.start()
+    #flightController.start()
     flightController.calibrate()
     flightController.turn_on()
-    sleep(10)
-    flightController.set_throttle(200)
-    key = raw_input("Input")
-    flightController.turn_off()
-    flightController.stop()
-    flightController.join()
+    flightController.set_throttle(300)
+    flightController.run()
+    # flightController.turn_off()
+    # flightController.stop()
+    # flightController.join()
