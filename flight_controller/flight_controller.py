@@ -101,7 +101,8 @@ class FlightController:
         raw_input("Disconnect battery and press enter")
         for motor in self._motors.values():
             motor.set_pulse_percentage(1.0)
-        raw_input("Connect battery and after signal press enter")
+        raw_input("Connect battery")
         for motor in self._motors.values():
             motor.set_pulse_percentage(0.0)
+        raw_input("Press enter after signal")
         self._is_calibrated = True

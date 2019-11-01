@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
 
 class Motor:
@@ -10,7 +11,7 @@ class Motor:
     MIN_PULSE = 0
     PULSE_SHIFT = 1000
     FREQUENCY = 250
-    PULSE_SCALE_MODIFIER = 1000
+    PULSE_SCALE_MODIFIER = 1000.0
 
     def __init__(self, port):
         self._port = port
@@ -33,9 +34,10 @@ class Motor:
             print("Wrong pulse value. Pulse value should be in range from 1000 to 2000.")
             return False
         self._pulse = int(pulse) + self.PULSE_SHIFT
-        pwm_duration_in_miliseconds = (1 / self.FREQUENCY) * self.PULSE_SCALE_MODIFIER
-        pulse_in_milisecounds = self._pulse / self.PULSE_SCALE_MODIFIER
-        self._motor.ChangeDutyCycle(pulse_in_milisecounds / pwm_duration_in_miliseconds)
+        pwm_duration = (1.0 / self.FREQUENCY) * self.PULSE_SCALE_MODIFIER
+        pulse_duration = self._pulse / self.PULSE_SCALE_MODIFIER
+        duty_cycle = pulse_duration / pwm_duration
+        self._motor.ChangeDutyCycle(duty_cycle * 100)
         return self._pulse
 
     def dispose(self):
@@ -44,11 +46,11 @@ class Motor:
 
 if __name__ == "__main__":
     motor = Motor(12)
-    sleep(2)
-    motor.set_pulse(0)
-    for i in range(300):
+    raw_input("Disconnect battery and press enter")
+    for i in range(150):
         motor.set_pulse(i)
         sleep(0.05)
-    for i in range(300):
-        motor.set_pulse(300-i)
-        sleep(0.05)
+    for i in range(150):
+        motor.set_pulse(150-i)
+    sleep(2)
+    motor.dispose()
