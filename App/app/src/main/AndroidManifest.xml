@@ -3,6 +3,7 @@
         package="com.kulmerjo.drone.hugocopter">
 
     <application
+            android:name=".MainApplication"
             android:allowBackup="true"
             android:icon="@mipmap/icon_logo"
             android:label="@string/app_name"

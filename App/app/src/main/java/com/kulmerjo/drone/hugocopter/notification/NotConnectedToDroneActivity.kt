@@ -8,11 +8,12 @@ import android.view.View
 import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.connection.ConnectionService
 import com.kulmerjo.drone.hugocopter.controll.MainDroneControlActivity
+import com.kulmerjo.drone.hugocopter.helper.ResourcesHelper
 import kotlinx.android.synthetic.main.activity_not_connected_to_drone.*
+import org.koin.android.ext.android.inject
 
 class NotConnectedToDroneActivity : AppCompatActivity() {
 
-    private val connectionService = ConnectionService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,7 @@ class NotConnectedToDroneActivity : AppCompatActivity() {
     }
 
     fun onClick(view: View) {
-        if (connectionService.isConnectedToDrone()) {
+        if (true) {
             val droneControlIntent = Intent(this, MainDroneControlActivity::class.java)
             startActivity(droneControlIntent)
         } else {
@@ -29,3 +30,4 @@ class NotConnectedToDroneActivity : AppCompatActivity() {
     }
 
 }
+
