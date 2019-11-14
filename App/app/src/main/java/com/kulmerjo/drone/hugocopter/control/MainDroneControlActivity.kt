@@ -1,4 +1,4 @@
-package com.kulmerjo.drone.hugocopter.controll
+package com.kulmerjo.drone.hugocopter.control
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

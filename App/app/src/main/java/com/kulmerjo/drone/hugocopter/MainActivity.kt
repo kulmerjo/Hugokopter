@@ -2,14 +2,12 @@ package com.kulmerjo.drone.hugocopter
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.kulmerjo.drone.hugocopter.connection.ConnectionService
-import com.kulmerjo.drone.hugocopter.controll.MainDroneControlActivity
-import com.kulmerjo.drone.hugocopter.helper.ResourcesHelper
+import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
 import com.kulmerjo.drone.hugocopter.notification.NotConnectedToDroneActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
@@ -21,7 +19,7 @@ import org.koin.android.ext.android.inject
  */
 class MainActivity : AppCompatActivity() {
 
-    private val connectionService : ResourcesHelper by inject()
+    private val connectionService : ConnectionService by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun intentDependedOnConnection(): Intent {
-        val port = connectionService.getConfigValueAsInt(this, R.raw.drone, ResourcesHelper.dronePortPropertyName)
-        Log.println(Log.INFO, null, "XDDDDDDDDD $port")
-        return if (true) {
+        return if (connectionService.isConnectedToDrone()) {
             Intent(this, MainDroneControlActivity::class.java)
         } else {
             Intent(this, NotConnectedToDroneActivity::class.java)
