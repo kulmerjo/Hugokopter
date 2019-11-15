@@ -13,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.MaterialComponents.NoActionBar"
             android:fullBackupContent="true">
-        <service android:name=".connection.impl.ConnectionServiceTcp" />
+        <service android:name=".connection.async.tcp.AsyncTcpClient" />
 
         <activity android:name=".control.MainDroneControlActivity" />
         <activity android:name=".notification.NotConnectedToDroneActivity" />

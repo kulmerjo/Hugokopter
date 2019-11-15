@@ -1,6 +1,7 @@
 package com.kulmerjo.drone.hugocopter
 
 import com.kulmerjo.drone.hugocopter.connection.ConnectionService
+import com.kulmerjo.drone.hugocopter.connection.async.tcp.AsyncTcpClient
 import com.kulmerjo.drone.hugocopter.connection.impl.ConnectionServiceTcp
 import com.kulmerjo.drone.hugocopter.helper.ResourcesHelper
 import com.kulmerjo.drone.hugocopter.helper.impl.ResourcesHelperImpl
@@ -9,8 +10,8 @@ import org.koin.dsl.module
 
 val appModule = module {
     single<ResourcesHelper> { ResourcesHelperImpl() }
-    single<ConnectionService> {
-        ConnectionServiceTcp(
+    single {
+        AsyncTcpClient(
             get<ResourcesHelper>().getConfigValueAsString(
                 androidContext(),
                 R.raw.drone,
@@ -20,5 +21,8 @@ val appModule = module {
                 R.raw.drone,
                 ResourcesHelper.dronePortPropertyName)
         )
+    }
+    single<ConnectionService> {
+        ConnectionServiceTcp(get())
     }
 }

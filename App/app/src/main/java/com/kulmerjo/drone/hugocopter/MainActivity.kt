@@ -7,6 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.kulmerjo.drone.hugocopter.connection.ConnectionService
+import com.kulmerjo.drone.hugocopter.connection.impl.ConnectionServiceTcp
 import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
 import com.kulmerjo.drone.hugocopter.notification.NotConnectedToDroneActivity
 import kotlinx.android.synthetic.main.activity_main.*
