@@ -1,22 +1,29 @@
 package com.kulmerjo.drone.hugocopter.connection.async.tcp
 
+import android.app.IntentService
+import android.content.Intent
 import java.net.Socket
 
-class AsyncTcpClient(private val ipAddress: String, private val port : Int) : Thread() {
+class AsyncTcpClient(private val ipAddress: String, private val port : Int)
+    : IntentService("TCP_CLIENT") {
 
-    private var serverSocket : Socket? = null
+    private var serverSocket : Socket = Socket(ipAddress, port)
 
-    override fun run() {
+    override fun onHandleIntent(intent: Intent?) {
         serverSocket = Socket(ipAddress, port)
-        super.run()
+        return
     }
 
-    fun getConnectedServerIpAddress() : String? {
-        return serverSocket?.inetAddress?.hostAddress
+    fun isConnected() : Boolean {
+        return serverSocket.isConnected
     }
 
-    fun getConnectedServerPort() : Int? {
-        return serverSocket?.port
+    fun getConnectedServerIpAddress() : String {
+        return serverSocket.inetAddress.hostAddress
+    }
+
+    fun getConnectedServerPort() : Int {
+        return serverSocket.port
     }
 
 }

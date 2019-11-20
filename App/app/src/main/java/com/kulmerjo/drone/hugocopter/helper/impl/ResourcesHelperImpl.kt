@@ -1,10 +1,16 @@
 package com.kulmerjo.drone.hugocopter.helper.impl
 
 import android.content.Context
+import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.helper.ResourcesHelper
 import java.util.*
 
 class ResourcesHelperImpl : ResourcesHelper {
+
+
+    override fun getDroneWifiSsid(context: Context): String {
+        return getConfigValueAsString(context, R.raw.drone, ResourcesHelper.droneSsid)
+    }
 
     override fun getConfigValueAsString(context: Context, configFile: Int, propertyName : String) : String {
         return getConfig(context, configFile, propertyName)

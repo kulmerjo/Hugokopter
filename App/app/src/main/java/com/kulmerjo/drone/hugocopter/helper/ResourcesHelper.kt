@@ -16,20 +16,27 @@ interface ResourcesHelper {
     companion object {
         const val droneAddressPropertyName = "drone.connection.address"
         const val dronePortPropertyName = "drone.connection.port"
+        const val droneSsid = "drone.connection.ssid"
     }
 
-    /**
+    /** Method which returns drone ssid
+     * @param context - global context of the app
+     */
+    fun getDroneWifiSsid(context: Context) : String
+
+    /** Method which returns value as String of property from specified config file
      * @param context - global context of the app
      * @param configFile - file which will be read
      * @param propertyName - property which will be read from configFile
      */
     fun getConfigValueAsString(context: Context, configFile: Int, propertyName : String) : String
 
-    /**
+    /** Method which returns value as Integer  of property from specified config file
      * @param context - global context of the app
      * @param configFile - file which will be read
      * @param propertyName - property which will be read from configFile
      */
     fun getConfigValueAsInt(context: Context, configFile: Int, propertyName : String) : Int
+
 
 }

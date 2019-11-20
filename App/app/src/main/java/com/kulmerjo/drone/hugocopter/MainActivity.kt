@@ -7,7 +7,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.kulmerjo.drone.hugocopter.connection.ConnectionService
-import com.kulmerjo.drone.hugocopter.connection.impl.ConnectionServiceTcp
+import com.kulmerjo.drone.hugocopter.connection.permission.PermissionHelper
+import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
 import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
 import com.kulmerjo.drone.hugocopter.notification.NotConnectedToDroneActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,9 +23,16 @@ class MainActivity : AppCompatActivity() {
 
     private val connectionService : ConnectionService by inject()
 
+    private val wifiService : WifiService by inject()
+
+    private val permissionHelper : PermissionHelper by inject()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        permissionHelper.checkAllStartPermissions(this)
         startAnimations()
     }
 
@@ -52,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun intentDependedOnConnection(): Intent {
-        return if (connectionService.isConnectedToDrone()) {
+        return if (wifiService.isWifiCorrect(applicationContext) && connectionService.isConnectedToDrone()) {
             Intent(this, MainDroneControlActivity::class.java)
         } else {
             Intent(this, NotConnectedToDroneActivity::class.java)
