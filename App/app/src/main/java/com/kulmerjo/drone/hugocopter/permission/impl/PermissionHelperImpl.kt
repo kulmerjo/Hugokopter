@@ -1,12 +1,13 @@
-package com.kulmerjo.drone.hugocopter.connection.permission
+package com.kulmerjo.drone.hugocopter.permission.impl
 
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.kulmerjo.drone.hugocopter.permission.PermissionHelper
 
-class PermissionHelper {
+class PermissionHelperImpl : PermissionHelper{
 
     companion object {
         private const val INTERNET_PERMISSION_CODE : Int = 1
@@ -15,7 +16,7 @@ class PermissionHelper {
         private const val ACCESS_FINE_LOCATION : Int = 4
     }
 
-    fun checkAllStartPermissions(activity: Activity) {
+    override fun checkAllStartPermissions(activity: Activity) {
         getAllStartPermissionsAsMap().forEach{
                 (permission, permissionCode) -> testPermission(permission, permissionCode, activity) }
     }
@@ -25,7 +26,8 @@ class PermissionHelper {
             Manifest.permission.INTERNET to INTERNET_PERMISSION_CODE,
             Manifest.permission.ACCESS_NETWORK_STATE to ACCESS_NETWORK_STATE_CODE,
             Manifest.permission.ACCESS_WIFI_STATE to ACCESS_WIFI_STATE_CODE,
-            Manifest.permission.ACCESS_FINE_LOCATION to ACCESS_FINE_LOCATION)
+            Manifest.permission.ACCESS_FINE_LOCATION to ACCESS_FINE_LOCATION
+        )
     }
 
     private fun testPermission(permission: String, permissionCode: Int, activity: Activity) {
@@ -35,5 +37,3 @@ class PermissionHelper {
     }
 
 }
-
-

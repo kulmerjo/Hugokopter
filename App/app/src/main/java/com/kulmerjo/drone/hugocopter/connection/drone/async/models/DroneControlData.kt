@@ -1,4 +1,4 @@
-package com.kulmerjo.drone.hugocopter.connection.async.models
+package com.kulmerjo.drone.hugocopter.connection.drone.async.models
 
 data class DroneControlData(
     val dataType : String,

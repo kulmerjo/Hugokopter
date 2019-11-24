@@ -38,5 +38,4 @@ interface ResourcesHelper {
      */
     fun getConfigValueAsInt(context: Context, configFile: Int, propertyName : String) : Int
 
-
 }

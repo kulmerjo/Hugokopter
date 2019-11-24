@@ -1,4 +1,4 @@
-package com.kulmerjo.drone.hugocopter.connection
+package com.kulmerjo.drone.hugocopter.connection.drone
 
 
 interface ConnectionService {

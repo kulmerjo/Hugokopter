@@ -6,19 +6,19 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import com.kulmerjo.drone.hugocopter.connection.ConnectionService
-import com.kulmerjo.drone.hugocopter.connection.permission.PermissionHelper
+import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
+import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.impl.AsyncTcpClientImpl
 import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
 import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
 import com.kulmerjo.drone.hugocopter.notification.NotConnectedToDroneActivity
+import com.kulmerjo.drone.hugocopter.permission.PermissionHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
 
 /**
  * @author hunteerq
- * Method provides logo and button which starts the control mode
- */
+ * Method provides logo and button which starts the control mode */
 class MainActivity : AppCompatActivity() {
 
     private val connectionService : ConnectionService by inject()
@@ -28,12 +28,17 @@ class MainActivity : AppCompatActivity() {
     private val permissionHelper : PermissionHelper by inject()
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         permissionHelper.checkAllStartPermissions(this)
+        startTcpConnection()
         startAnimations()
+    }
+
+    private fun startTcpConnection() {
+        val serverTcp = Intent(this, AsyncTcpClientImpl::class.java)
+        startForegroundService(serverTcp)
     }
 
     /**
@@ -61,8 +66,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun intentDependedOnConnection(): Intent {
         return if (wifiService.isWifiCorrect(applicationContext) && connectionService.isConnectedToDrone()) {
-            Intent(this, MainDroneControlActivity::class.java)
-        } else {
+            Intent(this, MainDroneControlActivity::class.java) }
+        else {
             Intent(this, NotConnectedToDroneActivity::class.java)
         }
     }
