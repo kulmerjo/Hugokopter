@@ -1,29 +1,41 @@
 package com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.impl
 
-import android.app.IntentService
-import android.content.Intent
+import com.kulmerjo.drone.hugocopter.connection.drone.async.models.DroneControlData
 import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.AsyncTcpClient
-import org.koin.android.ext.android.inject
+import kotlinx.serialization.ImplicitReflectionSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.stringify
+import java.io.ObjectOutputStream
 import java.net.Socket
+import java.util.concurrent.CompletableFuture
 
-class AsyncTcpClientImpl : IntentService("TCP_CLIENT"), AsyncTcpClient {
+class AsyncTcpClientImpl : Thread(), AsyncTcpClient {
 
-    private val ipAddress: String by inject()
-    private val port : Int by inject()
     private var serverSocket : Socket? = null
+    private var ipAddress : String = "192.168.0.101"
+    private var port : Int = 8080
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
+    override fun run() {
+        super.run()
         serverSocket = Socket(ipAddress, port)
-        return START_STICKY
-    }
-
-    override fun onHandleIntent(intent: Intent?) {
-        TODO("Not implemented yet")
     }
 
     override fun isConnected() : Boolean {
         return serverSocket?.isConnected ?: false
     }
+
+    @ImplicitReflectionSerializer
+    override fun sendControlDataAsync(controlData : DroneControlData) {
+        CompletableFuture.runAsync {
+            sendControlData(controlData)
+        }
+    }
+
+    @ImplicitReflectionSerializer
+    private fun sendControlData(controlData: DroneControlData) {
+        serverSocket?.getOutputStream()?.write(Json.stringify(controlData).toByteArray())
+
+    }
+
 
 }

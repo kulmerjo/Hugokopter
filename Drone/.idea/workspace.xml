@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b6fdb2ed-a007-4918-8205-b4b7c97ad36e" name="Default Changelist" comment="Adding TCP server to drone&#10;Minor changes in TCP client android app">
-      <change afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/connection/wifi/WifiService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/.idea/dictionaries/Hunteerq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../App/.idea/dictionaries/Hunteerq.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/AppModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/AppModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/connection/async/tcp/AsyncTcpClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/connection/async/tcp/AsyncTcpClient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/connection/impl/ConnectionServiceTcp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/java/com/kulmerjo/drone/hugocopter/connection/impl/ConnectionServiceTcp.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/app/src/main/res/raw/drone.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../App/app/src/main/res/raw/drone.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../App/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../App/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="b6fdb2ed-a007-4918-8205-b4b7c97ad36e" name="Default Changelist" comment="Adding TCP server to drone&#10;Minor changes in TCP client android app" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,10 +14,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/server/tcp/server_tcp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
+            <state relative-caret-position="935">
               <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -37,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="14" lean-forward="true" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+            <state relative-caret-position="34">
+              <caret line="2" column="7" selection-start-line="2" selection-end-line="3" />
             </state>
           </provider>
         </entry>
@@ -79,7 +68,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2282" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1096" />
@@ -134,7 +123,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Python/Neural networks/test/ai/multi_neurons.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Python/Don't u panic assshole" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -226,6 +215,7 @@
       <workItem from="1573691248218" duration="870000" />
       <workItem from="1573692129507" duration="2247000" />
       <workItem from="1574115705075" duration="1526000" />
+      <workItem from="1574704122171" duration="775000" />
     </task>
     <task id="LOCAL-00001" summary="Adding TCP server to drone&#10;Minor changes in TCP client android app">
       <created>1573694353235</created>
@@ -238,12 +228,12 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11361000" />
+    <option name="totallyTimeSpent" value="12136000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31982943" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.32356077" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -262,7 +252,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" visible="true" weight="0.11513859" />
+      <window_info active="true" anchor="right" id="SciView" order="3" visible="true" weight="0.11513859" />
       <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
@@ -302,6 +292,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/server/tcp/server_tcp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/res/tcp_server_config.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -311,18 +311,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="14" lean-forward="true" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/server/tcp/server_tcp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="55" column="22" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" column="7" selection-start-line="2" selection-end-line="3" />
         </state>
       </provider>
     </entry>

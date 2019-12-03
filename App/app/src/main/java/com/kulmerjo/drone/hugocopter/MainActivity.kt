@@ -7,6 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
+import com.kulmerjo.drone.hugocopter.connection.drone.async.models.DroneControlData
 import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.impl.AsyncTcpClientImpl
 import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
 import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
@@ -65,7 +66,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun intentDependedOnConnection(): Intent {
-        return if (wifiService.isWifiCorrect(applicationContext) && connectionService.isConnectedToDrone()) {
+        return if (/*wifiService.isWifiCorrect(applicationContext) && */connectionService.isConnectedToDrone()) {
+            val droneData = DroneControlData("Dupa", "Dupa", 2222.0)
+            connectionService.sendDataToDrone(droneData)
             Intent(this, MainDroneControlActivity::class.java) }
         else {
             Intent(this, NotConnectedToDroneActivity::class.java)
