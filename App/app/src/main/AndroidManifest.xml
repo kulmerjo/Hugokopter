@@ -17,7 +17,9 @@
             android:theme="@style/Theme.MaterialComponents.NoActionBar"
             android:fullBackupContent="true">
 
-        <activity android:name=".control.MainDroneControlActivity" />
+        <activity
+                android:screenOrientation="landscape"
+                android:name=".control.MainDroneControlActivity" />
         <activity android:name=".notification.NotConnectedToDroneActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

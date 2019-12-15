@@ -5,14 +5,13 @@ import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.AsyncTcpClient
 import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.stringify
-import java.io.ObjectOutputStream
 import java.net.Socket
 import java.util.concurrent.CompletableFuture
 
 class AsyncTcpClientImpl : Thread(), AsyncTcpClient {
 
     private var serverSocket : Socket? = null
-    private var ipAddress : String = "192.168.0.101"
+    private var ipAddress : String = "192.168.42.1"
     private var port : Int = 8080
 
     override fun run() {
@@ -21,6 +20,7 @@ class AsyncTcpClientImpl : Thread(), AsyncTcpClient {
     }
 
     override fun isConnected() : Boolean {
+        serverSocket?.getInputStream()?.read()
         return serverSocket?.isConnected ?: false
     }
 

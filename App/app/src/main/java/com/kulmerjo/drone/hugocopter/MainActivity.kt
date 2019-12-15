@@ -7,8 +7,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
-import com.kulmerjo.drone.hugocopter.connection.drone.async.models.DroneControlData
-import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.impl.AsyncTcpClientImpl
 import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
 import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
 import com.kulmerjo.drone.hugocopter.notification.NotConnectedToDroneActivity
@@ -33,14 +31,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         permissionHelper.checkAllStartPermissions(this)
-        startTcpConnection()
         startAnimations()
     }
 
-    private fun startTcpConnection() {
-        val serverTcp = Intent(this, AsyncTcpClientImpl::class.java)
-        startForegroundService(serverTcp)
-    }
 
     /**
      * Method starts all animations for button and logo
@@ -54,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     private fun setAnimation(duration: Long, animation: Animation) {
         animation.duration = duration
         logo_full.startAnimation(animation)
-        material_unelevated_button.startAnimation(animation)
+        button_move_backward.startAnimation(animation)
     }
 
     /**
@@ -65,14 +58,12 @@ class MainActivity : AppCompatActivity() {
         startActivity(nextIntent)
     }
 
+    //TODO If to the different class
     private fun intentDependedOnConnection(): Intent {
-        return if (/*wifiService.isWifiCorrect(applicationContext) && */connectionService.isConnectedToDrone()) {
-            val droneData = DroneControlData("Dupa", "Dupa", 2222.0)
-            connectionService.sendDataToDrone(droneData)
+        return if (wifiService.isWifiCorrect(applicationContext) && connectionService.isConnectedToDrone()) {
             Intent(this, MainDroneControlActivity::class.java) }
         else {
             Intent(this, NotConnectedToDroneActivity::class.java)
         }
     }
-
 }
