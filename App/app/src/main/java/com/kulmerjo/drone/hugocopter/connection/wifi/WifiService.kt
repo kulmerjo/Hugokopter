@@ -4,6 +4,6 @@ import android.content.Context
 
 interface WifiService {
 
-    fun isWifiCorrect(context : Context) : Boolean
+    fun isWifiCorrect() : Boolean
 
 }

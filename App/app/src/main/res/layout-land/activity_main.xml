@@ -26,7 +26,7 @@
             tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_move_backward"
+            android:id="@+id/button_start"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="195dp"
             android:layout_height="63dp"

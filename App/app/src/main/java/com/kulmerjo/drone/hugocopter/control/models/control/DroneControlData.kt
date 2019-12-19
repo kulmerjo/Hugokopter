@@ -1,11 +1,10 @@
-package com.kulmerjo.drone.hugocopter.connection.drone.async.models
+package com.kulmerjo.drone.hugocopter.control.models.control
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class DroneControlData (
-
     @SerialName("data_type")
     val dataType : String,
     @SerialName("control_type")

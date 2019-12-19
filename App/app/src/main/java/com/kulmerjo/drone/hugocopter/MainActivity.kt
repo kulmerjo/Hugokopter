@@ -7,7 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
-import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
+import com.kulmerjo.drone.hugocopter.connection.verify.ConnectionVerifier
 import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
 import com.kulmerjo.drone.hugocopter.notification.NotConnectedToDroneActivity
 import com.kulmerjo.drone.hugocopter.permission.PermissionHelper
@@ -20,11 +20,13 @@ import org.koin.android.ext.android.inject
  * Method provides logo and button which starts the control mode */
 class MainActivity : AppCompatActivity() {
 
+    private val connectionVerifier : ConnectionVerifier by inject()
+
     private val connectionService : ConnectionService by inject()
 
-    private val wifiService : WifiService by inject()
-
     private val permissionHelper : PermissionHelper by inject()
+
+    private val animationDuration = 700L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,33 +36,25 @@ class MainActivity : AppCompatActivity() {
         startAnimations()
     }
 
-
-    /**
-     * Method starts all animations for button and logo
-     */
     private fun startAnimations() {
-        val duration = 700L
-        val slideInLeftAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left)
-        setAnimation(duration, slideInLeftAnimation)
+        val slideInLeftLogoAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left)
+        setAnimation(slideInLeftLogoAnimation)
     }
 
-    private fun setAnimation(duration: Long, animation: Animation) {
-        animation.duration = duration
+    private fun setAnimation(animation: Animation) {
+        animation.duration = animationDuration
         logo_full.startAnimation(animation)
-        button_move_backward.startAnimation(animation)
+        button_start.startAnimation(animation)
     }
 
-    /**
-     * Start button listener
-     */
-    fun onClick(view: View) {
-        val nextIntent = intentDependedOnConnection()
+    fun onStartClick(view: View) {
+        val nextIntent = isConnectedToDroneIntent()
         startActivity(nextIntent)
     }
 
-    //TODO If to the different class
-    private fun intentDependedOnConnection(): Intent {
-        return if (wifiService.isWifiCorrect(applicationContext) && connectionService.isConnectedToDrone()) {
+    private fun isConnectedToDroneIntent(): Intent {
+        return if (connectionVerifier.isConnectedToProperDevice()) {
+            connectionService.sendConnectedInfoData()
             Intent(this, MainDroneControlActivity::class.java) }
         else {
             Intent(this, NotConnectedToDroneActivity::class.java)

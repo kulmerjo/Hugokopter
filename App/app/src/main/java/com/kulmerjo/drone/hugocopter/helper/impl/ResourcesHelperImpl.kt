@@ -5,22 +5,22 @@ import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.helper.ResourcesHelper
 import java.util.*
 
-class ResourcesHelperImpl : ResourcesHelper {
+class ResourcesHelperImpl(val context: Context): ResourcesHelper {
 
 
-    override fun getDroneWifiSsid(context: Context): String {
-        return getConfigValueAsString(context, R.raw.drone, ResourcesHelper.droneSsid)
+    override fun getDroneWifiSsid(): String {
+        return getConfigValueAsString(R.raw.drone, ResourcesHelper.droneSsid)
     }
 
-    override fun getConfigValueAsString(context: Context, configFile: Int, propertyName : String) : String {
-        return getConfig(context, configFile, propertyName)
+    override fun getConfigValueAsString(configFile: Int, propertyName : String) : String {
+        return getConfig(configFile, propertyName)
     }
 
-    override fun getConfigValueAsInt(context: Context, configFile: Int, propertyName : String) : Int {
-        return getConfig(context, configFile, propertyName).toInt()
+    override fun getConfigValueAsInt(configFile: Int, propertyName : String) : Int {
+        return getConfig(configFile, propertyName).toInt()
     }
 
-    private fun getConfig(context: Context, configFile: Int, propertyName : String) : String {
+    private fun getConfig(configFile: Int, propertyName : String) : String {
         val rawResource = context.resources.openRawResource(configFile)
         val property = Properties()
         property.load(rawResource)

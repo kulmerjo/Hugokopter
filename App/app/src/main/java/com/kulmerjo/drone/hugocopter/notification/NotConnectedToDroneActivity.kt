@@ -6,19 +6,19 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
-import com.kulmerjo.drone.hugocopter.connection.drone.async.models.DroneControlData
-import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
+import com.kulmerjo.drone.hugocopter.connection.verify.ConnectionVerifier
 import com.kulmerjo.drone.hugocopter.control.MainDroneControlActivity
 import kotlinx.android.synthetic.main.activity_not_connected_to_drone.*
 import org.koin.android.ext.android.inject
 
 class NotConnectedToDroneActivity : AppCompatActivity() {
 
-    private val wifiService : WifiService by inject()
+    private val connectionVerifier : ConnectionVerifier by inject()
 
     private val connectionService : ConnectionService by inject()
 
     private val droneControlIntent = Intent(this, MainDroneControlActivity::class.java)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +26,8 @@ class NotConnectedToDroneActivity : AppCompatActivity() {
     }
 
     fun onClick(view: View) {
-        if (wifiService.isWifiCorrect(applicationContext) && connectionService.isConnectedToDrone()) {
-            val droneData = DroneControlData("Dupa", "Dupa", 2222.0)
-            connectionService.sendDataToDrone(droneData)
+        if (connectionVerifier.isConnectedToProperDevice()) {
+            connectionService.sendConnectedInfoData()
             startActivity(droneControlIntent)
         } else {
             still_no_connection_text.visibility = View.VISIBLE
@@ -36,4 +35,3 @@ class NotConnectedToDroneActivity : AppCompatActivity() {
     }
 
 }
-

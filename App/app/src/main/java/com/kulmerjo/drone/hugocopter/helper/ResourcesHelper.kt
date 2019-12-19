@@ -20,22 +20,19 @@ interface ResourcesHelper {
     }
 
     /** Method which returns drone ssid
-     * @param context - global context of the app
      */
-    fun getDroneWifiSsid(context: Context) : String
+    fun getDroneWifiSsid() : String
 
     /** Method which returns value as String of property from specified config file
-     * @param context - global context of the app
      * @param configFile - file which will be read
      * @param propertyName - property which will be read from configFile
      */
-    fun getConfigValueAsString(context: Context, configFile: Int, propertyName : String) : String
+    fun getConfigValueAsString(configFile: Int, propertyName : String) : String
 
     /** Method which returns value as Integer  of property from specified config file
-     * @param context - global context of the app
      * @param configFile - file which will be read
      * @param propertyName - property which will be read from configFile
      */
-    fun getConfigValueAsInt(context: Context, configFile: Int, propertyName : String) : Int
+    fun getConfigValueAsInt(configFile: Int, propertyName : String) : Int
 
 }
