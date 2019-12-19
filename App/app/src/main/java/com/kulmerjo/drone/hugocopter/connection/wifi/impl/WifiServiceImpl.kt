@@ -6,13 +6,12 @@ import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
 import com.kulmerjo.drone.hugocopter.helper.ResourcesHelper
 
 class WifiServiceImpl (private val resourcesHelper : ResourcesHelper,
-                       private val context: Context) : WifiService {
+                       private val context: Context)
+    : WifiService {
 
 
     override fun isWifiCorrect () : Boolean {
-        return getConnectedWifiSsid().equals(
-            resourcesHelper.getDroneWifiSsid()
-        )
+        return getConnectedWifiSsid().equals(resourcesHelper.getDroneWifiSsid())
     }
 
     private fun getConnectedWifiSsid(): String? {

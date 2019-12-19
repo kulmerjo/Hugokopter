@@ -6,10 +6,6 @@ import android.view.View
 import android.widget.SeekBar
 import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
-import com.kulmerjo.drone.hugocopter.control.models.control.DroneControlData
-import com.kulmerjo.drone.hugocopter.control.models.info.DroneInfoData
-import com.kulmerjo.drone.hugocopter.control.models.EDataTypes
-import com.kulmerjo.drone.hugocopter.control.models.info.EInfoTypes
 import org.koin.android.ext.android.inject
 
 class MainDroneControlActivity : AppCompatActivity() {

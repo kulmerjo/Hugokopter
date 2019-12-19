@@ -6,7 +6,6 @@ import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.AsyncTcpClient
 import com.kulmerjo.drone.hugocopter.control.models.EDataTypes
 import com.kulmerjo.drone.hugocopter.control.models.info.DroneInfoData
 import com.kulmerjo.drone.hugocopter.control.models.info.EInfoTypes
-import java.util.zip.Inflater
 
 
 class ConnectionServiceTcp(private val tcpClient : AsyncTcpClient) : ConnectionService {

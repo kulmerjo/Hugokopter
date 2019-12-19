@@ -1,6 +1,5 @@
 package com.kulmerjo.drone.hugocopter.helper
 
-import android.content.Context
 
 /**
  * @author Artur Kulig.
