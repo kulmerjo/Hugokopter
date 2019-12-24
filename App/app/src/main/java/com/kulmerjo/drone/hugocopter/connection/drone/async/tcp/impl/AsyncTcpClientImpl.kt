@@ -20,7 +20,6 @@ class AsyncTcpClientImpl(private val ipAddress: String, private val port: Int)
     }
 
     override fun isConnected() : Boolean {
-        serverSocket?.getInputStream()?.read()
         return serverSocket?.isConnected ?: false
     }
 

@@ -1,9 +1,11 @@
 package com.kulmerjo.drone.hugocopter
 
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
+import com.kulmerjo.drone.hugocopter.connection.drone.VideoReceiverService
 import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.AsyncTcpClient
 import com.kulmerjo.drone.hugocopter.connection.drone.async.tcp.impl.AsyncTcpClientImpl
 import com.kulmerjo.drone.hugocopter.connection.drone.impl.ConnectionServiceTcp
+import com.kulmerjo.drone.hugocopter.connection.drone.impl.VideoReceiverServiceTcp
 import com.kulmerjo.drone.hugocopter.connection.verify.ConnectionVerifier
 import com.kulmerjo.drone.hugocopter.connection.verify.impl.DroneConnectionVerifier
 import com.kulmerjo.drone.hugocopter.connection.wifi.WifiService
@@ -26,6 +28,14 @@ val appModule = module {
             get<ResourcesHelper>().getConfigValueAsString(R.raw.drone, ResourcesHelper.droneAddressPropertyName),
             get<ResourcesHelper>().getConfigValueAsInt(R.raw.drone, ResourcesHelper.dronePortPropertyName)
         ).also {
+            it.start()
+        }
+    }
+    single<VideoReceiverService> {
+        VideoReceiverServiceTcp(
+            get<ResourcesHelper>().getConfigValueAsString(R.raw.drone, ResourcesHelper.droneAddressPropertyName),
+            get<ResourcesHelper>().getConfigValueAsInt(R.raw.drone, ResourcesHelper.droneVideoPortPropertyName)
+        ).also{
             it.start()
         }
     }

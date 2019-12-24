@@ -15,6 +15,7 @@ interface ResourcesHelper {
     companion object {
         const val droneAddressPropertyName = "drone.connection.address"
         const val dronePortPropertyName = "drone.connection.port"
+        const val droneVideoPortPropertyName = "drone.connection.video.port"
         const val droneSsid = "drone.connection.ssid"
     }
 
