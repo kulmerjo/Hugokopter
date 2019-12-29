@@ -26,20 +26,15 @@ class AsyncTcpClientImpl(private val ipAddress: String, private val port: Int)
     @ImplicitReflectionSerializer
     override fun  sendControlDataAsync(controlData : DroneControlData) {
         CompletableFuture.runAsync {
-            sendData(controlData)
+            serverSocket?.getOutputStream()?.write(Json.stringify(controlData).toByteArray())
         }
     }
 
     @ImplicitReflectionSerializer
     override fun sendInfoDataAsync(infoData: DroneInfoData) {
         CompletableFuture.runAsync{
-            sendData(infoData)
+            serverSocket?.getOutputStream()?.write(Json.stringify(infoData).toByteArray())
         }
-    }
-
-    @ImplicitReflectionSerializer
-    private fun sendData(controlData: Any) {
-        serverSocket?.getOutputStream()?.write(Json.stringify(controlData).toByteArray())
     }
 
 }

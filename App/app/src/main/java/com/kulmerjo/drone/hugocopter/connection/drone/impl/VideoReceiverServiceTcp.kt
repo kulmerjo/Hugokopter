@@ -29,20 +29,21 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
         return true
     }
 
-    override fun run(){
+    override fun run() {
         super.run()
         reconnect()
         receiveVideo()
         disconnect()
     }
 
-    private fun disconnect(){
+    private fun disconnect() {
         socket?.close()
     }
 
-    private fun showFrame(){
-        if(reader == null) return
-        if(reader!!.available() < 4) return
+    private fun showFrame() {
+        if (reader == null || reader!!.available() < 4) {
+            return
+        }
         val imageSize = reader?.readInt()
         val frame = readImage(imageSize!!)
         val bitMap: Bitmap = BitmapFactory.decodeByteArray(frame, 0, frame.size)
@@ -52,7 +53,7 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     }
 
     private fun readImage(size: Int): ByteArray{
-        while(reader!!.available() < size){
+        while (reader!!.available() < size) {
             sleep(100)
         }
         val byteArray = ByteArray(size)
@@ -60,24 +61,25 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
         return byteArray
     }
 
-    private fun receiveVideo(){
-        while(!isStopped){
+    private fun receiveVideo() {
+        while (!isStopped) {
             showFrame()
-            if(isConnected() == false || isClosed() == true){
+            if (isConnected() == false || isClosed() == true) {
                 reconnect()
             }
         }
     }
 
-    private fun isConnected(): Boolean?{
+    private fun isConnected(): Boolean? {
         return socket?.isConnected
     }
 
-    private fun isClosed(): Boolean?{
+    private fun isClosed(): Boolean? {
         return socket?.isClosed
     }
 
-    override fun stopThread(){
+
+    override fun stopThread() {
         isStopped = true
     }
 
