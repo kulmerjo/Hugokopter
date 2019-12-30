@@ -43,6 +43,7 @@ class VideoSender(Thread):
         self._camera = PiCamera()
         self._camera.resolution = self._camera_resolution
         self._camera.framerate = self._camera_framerate
+        self._camera.rotation = 180
 
     def _initialize_socket(self):
         try:

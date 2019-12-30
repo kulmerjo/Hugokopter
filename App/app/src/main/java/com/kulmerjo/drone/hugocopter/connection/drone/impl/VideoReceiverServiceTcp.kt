@@ -50,9 +50,7 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
             val image = readImage(imageSize)
             val bitMap: Bitmap? = convertByteArrayToBitmap(image)
             updateImageView(bitMap)
-        }catch (e: Exception){
-            reconnect()
-        }
+        }catch (e: Exception) {}
     }
 
     private fun updateImageView(bitMap: Bitmap?){
