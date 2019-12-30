@@ -16,9 +16,13 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     private var reader: DataInputStream? = null
     private var isStopped: Boolean = false
     private var socket: Socket? = null
+    private val packageHeaderSize: Int = 4
+    private val imageReadRetryDelay: Long = 100
+    private val imageReadMaxRetryAttempts: Int = 50
 
     override fun reconnect(): Boolean{
         try {
+            disconnect()
             socket = Socket(ipAddress, port)
             reader = DataInputStream(BufferedInputStream(socket!!.getInputStream()))
         } catch (e: Exception){
@@ -41,30 +45,55 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     }
 
     private fun showFrame() {
-        if (reader == null || reader!!.available() < 4) {
-            return
-        }
-        val imageSize = reader?.readInt()
-        val frame = readImage(imageSize!!)
-        val bitMap: Bitmap = BitmapFactory.decodeByteArray(frame, 0, frame.size)
-        imageView?.post{
-            imageView?.setImageBitmap(Bitmap.createScaledBitmap(bitMap, imageView!!.width, imageView!!.height, false))
+        try {
+            val imageSize = readImageSize()
+            val image = readImage(imageSize)
+            val bitMap: Bitmap? = convertByteArrayToBitmap(image)
+            updateImageView(bitMap)
+        }catch (e: Exception){
+            reconnect()
         }
     }
 
-    private fun readImage(size: Int): ByteArray{
-        while (reader!!.available() < size) {
-            sleep(100)
+    private fun updateImageView(bitMap: Bitmap?){
+        if (bitMap != null){
+            imageView?.post{
+                imageView?.setImageBitmap(Bitmap.createScaledBitmap(bitMap, imageView!!.width, imageView!!.height, false))
+            }
+        }
+    }
+
+    private fun convertByteArrayToBitmap(image: ByteArray?): Bitmap?{
+        return if (image != null) BitmapFactory.decodeByteArray(image, 0, image.size) else null
+    }
+
+    private fun readImageSize(): Int?{
+        return if (reader != null || reader!!.available() >= packageHeaderSize) reader?.readInt() else null
+    }
+
+    private fun readImage(size: Int?): ByteArray?{
+        if (size == null || !isImageAvailable(size)){
+            return null
         }
         val byteArray = ByteArray(size)
         reader?.readFully(byteArray, 0, size)
-        return byteArray
+        return if (byteArray.isNotEmpty()) byteArray else null
+    }
+
+    private fun isImageAvailable(size: Int): Boolean{
+        var numberOfAttempts = 0
+        while (reader!!.available() < size) {
+            numberOfAttempts++
+            if (numberOfAttempts > imageReadMaxRetryAttempts) return false
+            sleep(imageReadRetryDelay)
+        }
+        return true
     }
 
     private fun receiveVideo() {
         while (!isStopped) {
             showFrame()
-            if (isConnected() == false || isClosed() == true) {
+            if (isConnected() == false || isClosed() == true || socket == null) {
                 reconnect()
             }
         }
