@@ -106,5 +106,10 @@ class VideoSender(Thread):
                 break
 
     def run(self):
-        client, address = self._socket.accept()
-        self._stream(client)
+        self._socket.settimeout(5.0)
+        while not self._is_thread_stopped():
+            try:
+                client, address = self._socket.accept()
+                self._stream(client)
+            except e:
+                pass
