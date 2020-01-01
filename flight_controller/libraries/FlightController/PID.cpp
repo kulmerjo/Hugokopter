@@ -4,8 +4,8 @@
 PID::PID() {
 	SetConstants(1.0, 0.0, 0.0);
 	SetDesiredValue(0.0);
-	SetSampleTime(50000ul);
-	SetOutputLimits(500.0, -500.0);
+	SetSampleTime(5000ul);
+	SetOutputLimits(400.0, -400.0);
 	ResetValues();
 }
 
@@ -20,8 +20,8 @@ PID::PID(float kp, float kd, float ki, float desiredValue, unsigned long sampleT
 PID::PID(float kp, float kd, float ki) {
 	SetConstants(kp, kd, ki);
 	SetDesiredValue(0.0);
-	SetSampleTime(50000ul);
-	SetOutputLimits(500.0, -500.0);
+	SetSampleTime(5000ul);
+	SetOutputLimits(400.0, -400.0);
 	ResetValues();
 }
 
