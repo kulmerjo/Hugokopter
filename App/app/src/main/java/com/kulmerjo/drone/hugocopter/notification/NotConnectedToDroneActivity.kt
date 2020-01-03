@@ -23,9 +23,14 @@ class NotConnectedToDroneActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_not_connected_to_drone)
+        setButtonOnClickListeners()
     }
 
-    fun onClick(view: View) {
+    private fun setButtonOnClickListeners() {
+        test_connection_again_button.setOnClickListener { onClickMethod() }
+    }
+
+    private fun onClickMethod() {
         if (connectionVerifier.isConnectedToProperDevice()) {
             connectionService.sendConnectedInfoData()
             startActivity(droneControlIntent)

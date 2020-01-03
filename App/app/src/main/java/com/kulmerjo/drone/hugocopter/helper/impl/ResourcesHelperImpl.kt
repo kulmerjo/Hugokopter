@@ -5,7 +5,7 @@ import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.helper.ResourcesHelper
 import java.util.*
 
-class ResourcesHelperImpl(val context: Context): ResourcesHelper {
+class ResourcesHelperImpl(private val context: Context): ResourcesHelper {
 
 
     override fun getDroneWifiSsid(): String {

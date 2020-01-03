@@ -6,11 +6,9 @@ import android.widget.ImageView
 import com.kulmerjo.drone.hugocopter.connection.drone.VideoReceiverService
 import java.io.BufferedInputStream
 import java.io.DataInputStream
-import java.lang.Exception
 import java.net.Socket
-import java.util.*
 
-class VideoReceiverServiceTcp(private val ipAddress: String, private val port: Int) :Thread(), VideoReceiverService{
+class VideoReceiverServiceTcp(private val ipAddress: String, private val port: Int) :Thread(), VideoReceiverService {
 
     private var imageView: ImageView? = null
     private var reader: DataInputStream? = null
@@ -20,17 +18,12 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     private val imageReadRetryDelay: Long = 100
     private val imageReadMaxRetryAttempts: Int = 50
 
-    override fun reconnect(): Boolean{
-        try {
-            disconnect()
+    override fun reconnect(): Boolean {
+        disconnect()
+        return runCatching {
             socket = Socket(ipAddress, port)
-            reader = DataInputStream(BufferedInputStream(socket!!.getInputStream()))
-        } catch (e: Exception){
-            socket = null
-            reader = null
-            return false
-        }
-        return true
+            socket?.let{ reader = DataInputStream(BufferedInputStream(it.getInputStream())) }
+        }.isSuccess
     }
 
     override fun run() {
@@ -45,42 +38,56 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     }
 
     private fun showFrame() {
-        try {
+        kotlin.runCatching {
             val imageSize = readImageSize()
             val image = readImage(imageSize)
             val bitMap: Bitmap? = convertByteArrayToBitmap(image)
             updateImageView(bitMap)
-        }catch (e: Exception) {}
+        }
     }
 
-    private fun updateImageView(bitMap: Bitmap?){
-        if (bitMap != null){
-            imageView?.post{
-                imageView?.setImageBitmap(Bitmap.createScaledBitmap(bitMap, imageView!!.width, imageView!!.height, false))
+    private fun updateImageView(bitMap: Bitmap?) {
+        bitMap?.let {
+                bitmap -> imageView?.let {
+                iv ->createImageViewPost(iv, bitmap)
             }
         }
     }
 
-    private fun convertByteArrayToBitmap(image: ByteArray?): Bitmap?{
-        return if (image != null) BitmapFactory.decodeByteArray(image, 0, image.size) else null
+    private fun createImageViewPost(imageView: ImageView, bitMap: Bitmap) {
+        imageView.post {
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(bitMap, imageView.width, imageView.height, false))
+        }
     }
 
-    private fun readImageSize(): Int?{
+    private fun convertByteArrayToBitmap(image: ByteArray?): Bitmap? {
+        return image?.size?.let { BitmapFactory.decodeByteArray(image, 0, image.size) }
+    }
+
+    private fun readImageSize(): Int? {
         return if (reader != null || reader!!.available() >= packageHeaderSize) reader?.readInt() else null
     }
 
-    private fun readImage(size: Int?): ByteArray?{
-        if (size == null || !isImageAvailable(size)){
+    private fun readImage(size: Int?): ByteArray? {
+        if (size == null || !isImageAvailable(size)) {
             return null
         }
         val byteArray = ByteArray(size)
         reader?.readFully(byteArray, 0, size)
-        return if (byteArray.isNotEmpty()) byteArray else null
+        return runCatching {
+            if (byteArray.isNotEmpty()) byteArray else null
+        }.getOrNull()
     }
 
-    private fun isImageAvailable(size: Int): Boolean{
+    private fun isImageAvailable(size: Int): Boolean {
+        return reader?.run {
+            waitForImage(this, size)
+        } ?: false
+    }
+
+    private fun waitForImage(reader: DataInputStream, size : Int): Boolean {
         var numberOfAttempts = 0
-        while (reader!!.available() < size) {
+        while (reader.available() < size) {
             numberOfAttempts++
             if (numberOfAttempts > imageReadMaxRetryAttempts) return false
             sleep(imageReadRetryDelay)
@@ -104,7 +111,6 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     private fun isClosed(): Boolean? {
         return socket?.isClosed
     }
-
 
     override fun stopThread() {
         isStopped = true

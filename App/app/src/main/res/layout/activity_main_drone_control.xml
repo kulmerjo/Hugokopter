@@ -33,7 +33,6 @@
             android:fontFamily="@font/aldrich"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:onClick="onDisconnectClick"
             app:cornerRadius="14dp"
             app:icon="@drawable/ic_shutdown_48"
             app:iconGravity="textStart"

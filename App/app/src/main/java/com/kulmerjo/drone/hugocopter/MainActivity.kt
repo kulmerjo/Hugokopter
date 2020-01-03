@@ -2,7 +2,6 @@ package com.kulmerjo.drone.hugocopter
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +32,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         permissionHelper.checkAllStartPermissions(this)
+        setButtonsOnClickMethods()
         startAnimations()
+    }
+
+    private fun setButtonsOnClickMethods() {
+        button_start.setOnClickListener{ onClickMethod() }
     }
 
     private fun startAnimations() {
@@ -47,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         button_start.startAnimation(animation)
     }
 
-    fun onStartClick(view: View) {
+    private fun onClickMethod() {
         val nextIntent = isConnectedToDroneIntent()
         startActivity(nextIntent)
     }

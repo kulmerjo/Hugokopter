@@ -26,22 +26,21 @@
             tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_start"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:layout_width="195dp"
-            android:layout_height="63dp"
-            android:layout_marginBottom="124dp"
-            android:backgroundTint="#31BBDF"
-            android:fontFamily="@font/aldrich"
-            android:onClick="onStartClick"
-            android:text="@string/button_start_text"
-            android:textSize="18sp"
-            app:cornerRadius="14dp"
-            app:iconPadding="3dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:strokeWidth="0dp" />
+        android:id="@+id/button_start"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="195dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="124dp"
+        android:backgroundTint="#31BBDF"
+        android:fontFamily="@font/aldrich"
+        android:text="@string/button_start_text"
+        android:textSize="18sp"
+        app:cornerRadius="14dp"
+        app:iconPadding="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeWidth="0dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
