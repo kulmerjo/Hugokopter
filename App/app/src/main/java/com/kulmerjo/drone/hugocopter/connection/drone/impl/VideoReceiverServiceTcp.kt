@@ -18,6 +18,13 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     private val imageReadRetryDelay: Long = 100
     private val imageReadMaxRetryAttempts: Int = 50
 
+    override fun run() {
+        super.run()
+        reconnect()
+        receiveVideo()
+        disconnect()
+    }
+
     override fun reconnect(): Boolean {
         disconnect()
         return runCatching {
@@ -26,15 +33,17 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
         }.isSuccess
     }
 
-    override fun run() {
-        super.run()
-        reconnect()
-        receiveVideo()
-        disconnect()
-    }
-
     private fun disconnect() {
         socket?.close()
+    }
+
+    private fun receiveVideo() {
+        while (!isStopped) {
+            showFrame()
+            if (isConnected() == false || isClosed() == true || socket == null) {
+                reconnect()
+            }
+        }
     }
 
     private fun showFrame() {
@@ -44,24 +53,6 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
             val bitMap: Bitmap? = convertByteArrayToBitmap(image)
             updateImageView(bitMap)
         }
-    }
-
-    private fun updateImageView(bitMap: Bitmap?) {
-        bitMap?.let {
-                bitmap -> imageView?.let {
-                iv ->createImageViewPost(iv, bitmap)
-            }
-        }
-    }
-
-    private fun createImageViewPost(imageView: ImageView, bitMap: Bitmap) {
-        imageView.post {
-            imageView.setImageBitmap(Bitmap.createScaledBitmap(bitMap, imageView.width, imageView.height, false))
-        }
-    }
-
-    private fun convertByteArrayToBitmap(image: ByteArray?): Bitmap? {
-        return image?.size?.let { BitmapFactory.decodeByteArray(image, 0, image.size) }
     }
 
     private fun readImageSize(): Int? {
@@ -95,12 +86,21 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
         return true
     }
 
-    private fun receiveVideo() {
-        while (!isStopped) {
-            showFrame()
-            if (isConnected() == false || isClosed() == true || socket == null) {
-                reconnect()
+    private fun convertByteArrayToBitmap(image: ByteArray?): Bitmap? {
+        return image?.size?.let { BitmapFactory .decodeByteArray(image, 0, image.size) }
+    }
+
+    private fun updateImageView(bitMap: Bitmap?) {
+        bitMap?.let {
+                bitmap -> imageView?.let {
+                iv -> createImageViewPost(iv, bitmap)
             }
+        }
+    }
+
+    private fun createImageViewPost(imageView: ImageView, bitMap: Bitmap) {
+        imageView.post {
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(bitMap, imageView.width, imageView.height, false))
         }
     }
 
