@@ -80,8 +80,7 @@ void SensorData::Add(SensorData sensorData) {
 }
 
 void AccelGyro::Initialize() {
-	Wire.begin();
-	_accelCorrection = Correction(0.05, -0.02, -0.04);
+	_accelCorrection = Correction(0.0, 0.0, 0.0);
 	_gyroCorrection = Correction(0.0, 0.0, 0.0);
 	_compFilterAlpha = 0.04;
 	_prevMeasurementTime = micros();
@@ -215,33 +214,29 @@ Correction AccelGyro::GetGyroCorrection() {
 }
 
 void AccelGyro::Calibrate() {
-	CalibrateAccel();
-	CalibrateGyro();
-}
-
-void AccelGyro::CalibrateAccel() {
-	SensorData accelData, totalAccelData;
+	SensorData accelData, gyroData, totalAccelData, totalGyroData;
 	totalAccelData = SensorData(0.0, 0.0, 0.0);
+	totalGyroData = SensorData(0.0, 0.0, 0.0);
 	_rotation = Rotation(0.0, 0.0, 0.0);
-	_accelCorrection.x = 0.0;
-	_accelCorrection.y = 0.0;
-	_accelCorrection.z = 0.0;
 	for (int i = 0; i < CALIBRATION_SAMPLES; i++) {
 		accelData = GetData(ACCEL_DATA_REG);
+		gyroData = GetData(GYRO_DATA_REG);
 		totalAccelData.Add(accelData);
+		totalGyroData.Add(gyroData);
 	}
 	_accelCorrection.x = totalAccelData.x / CALIBRATION_SAMPLES;
 	_accelCorrection.y = totalAccelData.y / CALIBRATION_SAMPLES;
 	_accelCorrection.z = (totalAccelData.z / CALIBRATION_SAMPLES) - 1;
+	_gyroCorrection.x = totalGyroData.x / CALIBRATION_SAMPLES;
+	_gyroCorrection.y = totalGyroData.y / CALIBRATION_SAMPLES;
+	_gyroCorrection.z = totalGyroData.z / CALIBRATION_SAMPLES;
 	_prevMeasurementTime = micros();
 }
 
 void AccelGyro::CalibrateGyro() {
 	SensorData gyroData, totalGyroData;
 	totalGyroData = SensorData(0.0, 0.0, 0.0);
-	_gyroCorrection.x = 0.0;
-	_gyroCorrection.y = 0.0;
-	_gyroCorrection.z = 0.0;
+	_rotation = Rotation(0.0, 0.0, 0.0);
 	for (int i = 0; i < CALIBRATION_SAMPLES; i++) {
 		gyroData = GetData(GYRO_DATA_REG);
 		totalGyroData.Add(gyroData);

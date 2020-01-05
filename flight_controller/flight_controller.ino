@@ -1,29 +1,33 @@
 #include <Wire.h>
-#include <Servo.h>
-#include <AccelGyro.h>
-#include <PID.h>
-
+#include <Drone.h>
 
 Drone drone;
 
 
 void setup() {
-  Wire.begin(0x13);
   Serial.begin(9600);
+  wireInitialize();
   drone.initialize();
 }
 
+void wireInitialize(){
+  Wire.begin();
+  Wire1.begin(0x13);
+  Wire1.onReceive(onCommand);
+//jakby nie dzialalo to odkomentowac :) 
+//  Wire1.onRequest(onReq);
+}
+
+//void onReq(){
+//  Wire1.write("req");
+//}
+
 void loop() {
-  onCommand();
   drone.droneLoop();  
 }
 
-void onCommand() {
-  if (Wire.available() >= 2) {
-    int drone_command = (int)Wire.read();  
-    int drone_speed = (int)Wire.read();
-    drone.setDirection(drone_command, drone_speed);
-  }
-  
-  
+void onCommand(int howMany) {
+    int drone_command = (int)Wire1.read();  
+    int drone_speed = (int)Wire1.read();
+    drone.setDirection(drone_command, drone_speed);  
 }

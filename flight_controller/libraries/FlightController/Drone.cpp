@@ -6,15 +6,17 @@
 #include <PID.h>
 
 void Drone::initialize() {
-    right_prop.attach(6); 
-    right_prop2.attach(7);
     left_prop.attach(4);
     left_prop2.attach(5);
+    right_prop2.attach(6);
+    right_prop.attach(7); 
     accelGyro.Initialize();
     if (accelGyro.IsConnected()) {
         isWorking = 1;
         accelGyro.CalibrateGyro();
     }
+    Serial.print("IsWorking: ");
+    Serial.println(isWorking);
     pid_pitch.SetConstants(kp_pitch, kd_pitch, ki_pitch);
     pid_roll.SetConstants(kp_roll, kd_roll, ki_roll);
     pid_yaw.SetConstants(kp_yaw, kd_yaw, ki_yaw);
@@ -26,9 +28,11 @@ void Drone::droneLoop() {
     Rotation rotation = accelGyro.GetRotation();
     switch(state * isWorking) {
         case 0:
-            setMotorsWhenDronIsOff()
+            Serial.print("State 0 | ");
+            setMotorsWhenDronIsOff();
             break;
         case 1:
+            Serial.print("State 1 | ");
             setMotorsWhenDronIsOn(rotation);
             break;
     }
@@ -44,9 +48,9 @@ void Drone::setMotorsWhenDronIsOff() {
 }
 
 void Drone::setMotorsWhenDronIsOn(Rotation rotation) {
-    float pid_roll_output = pid_roll.Update(rotation.y);
+    float pid_roll_output = pid_roll.Update(-rotation.y);
     float pid_yaw_output = pid_yaw.Update(rotation.z);
-    float pid_pitch_output = pid_pitch.Update(rotation.x);
+    float pid_pitch_output = pid_pitch.Update(-rotation.x);
     motorLeft = throttle + pid_roll_output + pid_pitch_output + pid_yaw_output;
     motorLeft2 = throttle + pid_roll_output - pid_pitch_output - pid_yaw_output;
     motorRight = throttle - pid_roll_output + pid_pitch_output - pid_yaw_output;
@@ -59,12 +63,13 @@ void Drone::setMotorsWhenDronIsOn(Rotation rotation) {
 
 // TODO: Debug only
 void Drone::printAllMotors() {
+    Serial.print("l1: ");
     Serial.print(motorLeft);
-    Serial.print(" ");
+    Serial.print("| l2: ");
     Serial.print(motorLeft2);
-    Serial.print(" ");
+    Serial.print("| r1: ");
     Serial.print(motorRight);
-    Serial.print(" ");
+    Serial.print("| r2: ");
     Serial.println(motorRight2);
 }
 
@@ -81,10 +86,10 @@ void Drone::setThrottle(int speed) {
 }
 
 void Drone::clampValue(int& value) {
-    if (value < 1000){
+    if (value < 1000) {
         value = 1000;
     }
-    if (value > 2000){
+    if (value > 2000) {
         value = 2000;
     }
 }

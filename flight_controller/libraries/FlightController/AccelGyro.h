@@ -70,7 +70,6 @@ public:
 	AccelGyro(int address);
 	void Calibrate();
 	void CalibrateGyro();
-	void CalibrateAccel();
 	SensorData GetData(int dataRegister);
 	Rotation GetRotationAccel();
 	Rotation GetRotationGyro();

@@ -8,15 +8,6 @@
 #include <PID.h>
 
 
-Servo right_prop;
-Servo left_prop;
-Servo left_prop2;
-Servo right_prop2;
-AccelGyro accelGyro;
-PID pid_pitch, pid_roll, pid_yaw;
-float pid_pitch_output, pid_roll_output, pid_yaw_output;
-int motorLeft, motorLeft2, motorRight, motorRight2;
-Rotation rotation;
 
 const float kp_pitch = 3;
 const float ki_pitch = 0.0;
@@ -36,7 +27,7 @@ class Drone {
         void initialize();
         void droneLoop();
         void setThrottle(int speed);
-        void setDirection(int command);
+        void setDirection(int command, int drone_speed);
     private:
         Servo right_prop;
         Servo left_prop;
@@ -44,13 +35,14 @@ class Drone {
         Servo right_prop2;
         AccelGyro accelGyro;
         PID pid_pitch, pid_roll, pid_yaw;
-        double throttle = 1000;
+        int throttle = 1000;
+        int motorLeft, motorLeft2, motorRight, motorRight2;
         int isWorking = 0;
         int state = 0;
         void setMotorsWhenDronIsOff();
-        void setMotorsWhenDronIsOn();
+        void setMotorsWhenDronIsOn(Rotation rotation);
         void setMotorPowers();
-        void clampValue();
-    
+        void clampValue(int &value);
+        void printAllMotors();
 };
 #endif
