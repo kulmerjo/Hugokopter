@@ -53,7 +53,7 @@ class VideoSender(Thread):
         except socket.error as msg:
             print(f'Initialize socket failed')
             sys.exit(-1)
-            
+
     def _read_config(self):
         if os.path.isfile(self._config_file):
             with open(self._config_file) as json_file:
@@ -111,5 +111,6 @@ class VideoSender(Thread):
             try:
                 client, address = self._socket.accept()
                 self._stream(client)
-            except e:
+            except:
                 pass
+

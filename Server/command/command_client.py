@@ -11,6 +11,7 @@ class Client(Thread):
         self.__connection = connection
         self.__address = address
         self.__data_type_to_i2c_byte_dictionary = self.__get_i2c_dictionary()
+        self.__data_type_dictionary = self.__get_data_type_dictionary()
         self.__MAX_PACKAGE = max_package
         self.__server = server
         self.__end = False
@@ -28,7 +29,16 @@ class Client(Thread):
             "backward": 0x03,
             "left": 0x04,
             "up": 0x05,
-            "down": 0x06
+            "down": 0x06,
+            "stable": 0x07,
+            "connect": 0x08,
+            "disconnect": 0x09
+        }
+
+    def __get_data_type_dictionary(self):
+        return {
+            "control": lambda _deserialized_data: self.__send_command(_deserialized_data),
+            "info": lambda _deserialized_data: self.__send_info(_deserialized_data)
         }
 
     def run(self):
@@ -41,9 +51,7 @@ class Client(Thread):
                 if data == b'':
                     break
                 deserialized_data = self.__deserialize_object(data)
-                data_type = self.__get_request_type(deserialized_data)
-                speed = self.__get_speed(deserialized_data)
-                self.send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[data_type], speed)
+                self.__data_type_dictionary[self.__get_request_type(deserialized_data)].__call__(deserialized_data)
             except KeyError:
                 print('request handler not founded')
                 self.__connection.sendall(self.__serialize_object({'respond': 'request cannot be handled}'}))
@@ -81,7 +89,16 @@ class Client(Thread):
     def __deserialize_object(sending_object):
         return json.loads(sending_object)
 
-    def send_i2c_bytes(self, byte, speed):
+    def __send_command(self, deserialized_data):
+        speed = self.__get_speed(deserialized_data)
+        request_type = self.__get_request_type(deserialized_data)
+        self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[request_type], speed)
+
+    def __send_info(self, deserialized_data):
+        request_type = self.__get_request_type(deserialized_data)
+        self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[request_type], 0)
+
+    def __send_i2c_bytes(self, byte, speed):
         self.__bus.write_byte_data(self.__DEVICE_ADDRESS, byte, speed)
 
 
