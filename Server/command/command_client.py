@@ -24,21 +24,21 @@ class Client(Thread):
     @staticmethod
     def __get_i2c_dictionary():
         return {
-            "forward": 0x01,
-            "right": 0x02,
-            "backward": 0x03,
-            "left": 0x04,
-            "up": 0x05,
-            "down": 0x06,
-            "stable": 0x07,
-            "connect": 0x08,
-            "disconnect": 0x09
+            'forward': 0x01,
+            'right': 0x02,
+            'backward': 0x03,
+            'left': 0x04,
+            'up': 0x05,
+            'down': 0x06,
+            'stable': 0x07,
+            'connect': 0x08,
+            'disconnect': 0x09
         }
 
     def __get_data_type_dictionary(self):
         return {
-            "control": lambda _deserialized_data: self.__send_command(_deserialized_data),
-            "info": lambda _deserialized_data: self.__send_info(_deserialized_data)
+            'control': lambda _deserialized_data: self.__send_command(_deserialized_data),
+            'info': lambda _deserialized_data: self.__send_info(_deserialized_data)
         }
 
     def run(self):
@@ -66,8 +66,7 @@ class Client(Thread):
     @staticmethod
     def __get_request_type(data):
         try:
-            mapped_to_json = json.loads(data)
-            return mapped_to_json['data_type']
+            return data['data_type']
         except KeyError as e:
             print(f'Exception in parsing json file {e}')
             return
@@ -75,8 +74,15 @@ class Client(Thread):
     @staticmethod
     def __get_speed(data):
         try:
-            mapped_to_json = json.loads(data)
-            return int(mapped_to_json['speed'])
+            return int(data['speed'])
+        except KeyError as e:
+            print(f'Exception in parsing json file {e}')
+            return
+
+    @staticmethod
+    def __get_command(data):
+        try:
+            return data['command']
         except KeyError as e:
             print(f'Exception in parsing json file {e}')
             return
@@ -95,8 +101,8 @@ class Client(Thread):
         self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[request_type], speed)
 
     def __send_info(self, deserialized_data):
-        request_type = self.__get_request_type(deserialized_data)
-        self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[request_type], 0)
+        command = self.__get_command(deserialized_data)
+        self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[command], 0)
 
     def __send_i2c_bytes(self, byte, speed):
         self.__bus.write_byte_data(self.__DEVICE_ADDRESS, byte, speed)
