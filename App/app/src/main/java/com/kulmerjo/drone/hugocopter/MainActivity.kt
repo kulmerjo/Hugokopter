@@ -16,7 +16,8 @@ import org.koin.android.ext.android.inject
 
 /**
  * @author hunteerq
- * Method provides logo and button which starts the control mode */
+ * Method provides logo and button which starts the control mode
+ **/
 class MainActivity : AppCompatActivity() {
 
     private val connectionVerifier : ConnectionVerifier by inject()
