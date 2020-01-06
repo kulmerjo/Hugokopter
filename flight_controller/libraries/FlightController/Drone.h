@@ -9,12 +9,12 @@
 
 
 
-const float kp_pitch = 3;
+const float kp_pitch = 15;
 const float ki_pitch = 0.0;
-const float kd_pitch = 0.3;
-const double kp_roll = 1;
-const double ki_roll = 0;
-const double kd_roll = 0;
+const float kd_pitch = 60;
+const double kp_roll = kp_pitch;
+const double ki_roll = ki_pitch;
+const double kd_roll = kd_pitch;
 const double kp_yaw = 1;
 const double ki_yaw = 0;
 const double kd_yaw = 0;
@@ -44,5 +44,7 @@ class Drone {
         void setMotorPowers();
         void clampValue(int &value);
         void printAllMotors();
+        void rotationGuard(Rotation rotation);
+        void resetValues();
 };
 #endif

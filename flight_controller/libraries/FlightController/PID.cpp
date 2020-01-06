@@ -77,7 +77,8 @@ float PID::Update(float actualValue) {
 	derror = error - _lastError;
 	pid_p = _kp * error;
 	if (_derivativeCalculated) {
-		pid_d = _kd * (derror / elapsedTimeInSeconds);
+		// pid_d = _kd * (derror / elapsedTimeInSeconds);
+		pid_d = _kd * derror;
 	} else {
 		pid_d = 0;
 		_derivativeCalculated = true;

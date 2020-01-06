@@ -14,13 +14,7 @@ void wireInitialize(){
   Wire.begin();
   Wire1.begin(0x13);
   Wire1.onReceive(onCommand);
-//jakby nie dzialalo to odkomentowac :) 
-//  Wire1.onRequest(onReq);
 }
-
-//void onReq(){
-//  Wire1.write("req");
-//}
 
 void loop() {
   drone.droneLoop();  

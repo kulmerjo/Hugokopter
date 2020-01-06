@@ -26,6 +26,7 @@ void Drone::initialize() {
 
 void Drone::droneLoop() {
     Rotation rotation = accelGyro.GetRotation();
+    rotationGuard(rotation);
     switch(state * isWorking) {
         case 0:
             Serial.print("State 0 | ");
@@ -40,6 +41,12 @@ void Drone::droneLoop() {
     setMotorPowers();
 }
 
+void Drone::rotationGuard(Rotation rotation) {
+    if (rotation.x > 20 || rotation.x < -20 || rotation.y > 20 || rotation.y < -20) {
+        state = 0;
+    }
+}
+
 void Drone::setMotorsWhenDronIsOff() {
     motorLeft = 1000;
     motorLeft2 = 1000;
@@ -48,9 +55,16 @@ void Drone::setMotorsWhenDronIsOff() {
 }
 
 void Drone::setMotorsWhenDronIsOn(Rotation rotation) {
-    float pid_roll_output = pid_roll.Update(-rotation.y);
-    float pid_yaw_output = pid_yaw.Update(rotation.z);
-    float pid_pitch_output = pid_pitch.Update(-rotation.x);
+    float pid_roll_output, pid_yaw_output, pid_pitch_output;
+    if (throttle >= 1100) {
+        pid_roll_output = pid_roll.Update(-rotation.y);
+        pid_yaw_output = pid_yaw.Update(rotation.z);
+        pid_pitch_output = pid_pitch.Update(-rotation.x);
+    } else {
+        pid_roll_output = 0;
+        pid_yaw_output = 0;
+        pid_pitch_output = 0;
+    }
     motorLeft = throttle + pid_roll_output + pid_pitch_output + pid_yaw_output;
     motorLeft2 = throttle + pid_roll_output - pid_pitch_output - pid_yaw_output;
     motorRight = throttle - pid_roll_output + pid_pitch_output - pid_yaw_output;
@@ -136,10 +150,18 @@ void Drone::setDirection(int command, int drone_speed) {
             break;
 
         case 9:
+            resetValues();
             state = 0;
             break;
 
         default:
             break;
     }
+}
+
+void Drone::resetValues() {
+    throttle = 1000;
+    pid_roll.SetDesiredValue(0.0);
+    pid_pitch.SetDesiredValue(0.0);
+    pid_yaw.SetDesiredValue(0.0);
 }
