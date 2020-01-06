@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         permissionHelper.checkAllStartPermissions(this)
         setButtonsOnClickMethods()
         startAnimations()
+        connectionVerifier.isConnectedToProperDevice()
     }
 
     private fun setButtonsOnClickMethods() {
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClickMethod() {
         val nextIntent = isConnectedToDroneIntent()
+        finish()
         startActivity(nextIntent)
     }
 

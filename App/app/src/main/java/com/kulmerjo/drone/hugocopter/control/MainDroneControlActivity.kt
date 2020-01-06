@@ -1,10 +1,12 @@
 package com.kulmerjo.drone.hugocopter.control
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import com.google.android.material.button.MaterialButton
+import com.kulmerjo.drone.hugocopter.MainActivity
 import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
 import com.kulmerjo.drone.hugocopter.connection.drone.VideoReceiverService
@@ -75,5 +77,7 @@ class MainDroneControlActivity : AppCompatActivity() {
 
     private fun onDisconnectClick() {
         connectionService.sendDisconnectedInfoData()
+        val startActivity = Intent(this, MainActivity::class.java)
+        startActivity(startActivity)
     }
 }
