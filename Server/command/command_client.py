@@ -70,6 +70,14 @@ class Client(Thread):
         except KeyError as e:
             print(f'Exception in parsing json file {e}')
             return
+    
+    @staticmethod
+    def __get_control_type(data):
+        try:
+            return data['control_type']
+        except KeyError as e:
+            print(f'Exception in parsing json file {e}')
+            return
 
     @staticmethod
     def __get_speed(data):
@@ -97,14 +105,15 @@ class Client(Thread):
 
     def __send_command(self, deserialized_data):
         speed = self.__get_speed(deserialized_data)
-        request_type = self.__get_request_type(deserialized_data)
-        self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[request_type], speed)
+        control_type = self.__get_control_type(deserialized_data)
+        self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[control_type], speed)
 
     def __send_info(self, deserialized_data):
         command = self.__get_command(deserialized_data)
         self.__send_i2c_bytes(self.__data_type_to_i2c_byte_dictionary[command], 0)
 
     def __send_i2c_bytes(self, byte, speed):
+        print(f'Sending: byte = {byte}, speed = {speed}')
         self.__bus.write_byte_data(self.__DEVICE_ADDRESS, byte, speed)
 
 
