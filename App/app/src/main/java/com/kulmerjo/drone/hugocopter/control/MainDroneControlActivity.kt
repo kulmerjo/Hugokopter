@@ -4,12 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
 import com.google.android.material.button.MaterialButton
 import com.kulmerjo.drone.hugocopter.R
 import com.kulmerjo.drone.hugocopter.connection.drone.ConnectionService
 import com.kulmerjo.drone.hugocopter.connection.drone.VideoReceiverService
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_drone_control.*
 import org.koin.android.ext.android.inject
 
@@ -37,25 +35,27 @@ class MainDroneControlActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_drone_control)
         videoReceiverService.setImageView(findViewById(R.id.imageView))
         setButtonOnClickListeners()
-        setButtonsOnClickReleaseListeners()
+        setButtonsOnTouchListeners()
     }
 
-    private fun setButtonsOnClickReleaseListeners() {
+    private fun setButtonsOnTouchListeners() {
         getButtonsList().forEach { button ->
             button.setOnTouchListener {
-                    view, event -> testIfButtonIsReleased(view, event)
+                    view, event -> performTouchAction(view, event)
             }
         }
     }
 
-    private fun testIfButtonIsReleased(v: View, event: MotionEvent): Boolean {
-        if (event.action == MotionEvent.ACTION_BUTTON_RELEASE) {
-            onButtonRelease(v)
+    private fun performTouchAction(v: View, event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_UP) {
+            onButtonRelease()
+        } else if(event.action == MotionEvent.ACTION_DOWN){
+            onMoveClick(v)
         }
         return true
     }
 
-    private fun onButtonRelease(view: View) {
+    private fun onButtonRelease() {
         connectionService.sendControlDataToDrone(stableMoveType, 0.0)
     }
 
