@@ -19,15 +19,11 @@ class MainDroneControlActivity : AppCompatActivity() {
 
     private val videoReceiverService: VideoReceiverService by inject()
 
-    private val imageView: ImageView = findViewById(R.id.imageView)
-
     private val speed  = 5.0
 
     private val stableMoveType = "stable"
 
-    private val buttonsMap = createButtonsList()
-
-    private fun createButtonsList(): List<MaterialButton> {
+    private fun getButtonsList(): List<MaterialButton> {
         return listOf(
             button_move_forward,
             button_move_backward,
@@ -39,13 +35,13 @@ class MainDroneControlActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_drone_control)
-        videoReceiverService.setImageView(imageView)
+        videoReceiverService.setImageView(findViewById(R.id.imageView))
         setButtonOnClickListeners()
         setButtonsOnClickReleaseListeners()
     }
 
     private fun setButtonsOnClickReleaseListeners() {
-        buttonsMap.forEach { button ->
+        getButtonsList().forEach { button ->
             button.setOnTouchListener {
                     view, event -> testIfButtonIsReleased(view, event)
             }
@@ -64,7 +60,7 @@ class MainDroneControlActivity : AppCompatActivity() {
     }
 
     private fun setButtonOnClickListeners() {
-        button_start.setOnClickListener { onDisconnectClick() }
+        button_exit.setOnClickListener { onDisconnectClick() }
     }
 
     override fun onDestroy() {

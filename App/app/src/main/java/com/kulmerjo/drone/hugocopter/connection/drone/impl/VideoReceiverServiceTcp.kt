@@ -7,6 +7,9 @@ import com.kulmerjo.drone.hugocopter.connection.drone.VideoReceiverService
 import java.io.BufferedInputStream
 import java.io.DataInputStream
 import java.net.Socket
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 class VideoReceiverServiceTcp(private val ipAddress: String, private val port: Int) :Thread(), VideoReceiverService {
 
@@ -17,6 +20,7 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     private val packageHeaderSize: Int = 4
     private val imageReadRetryDelay: Long = 100
     private val imageReadMaxRetryAttempts: Int = 50
+    private var imageLock: Lock = ReentrantLock()
 
     override fun run() {
         super.run()
@@ -93,7 +97,7 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     private fun updateImageView(bitMap: Bitmap?) {
         bitMap?.let {
                 bitmap -> imageView?.let {
-                iv -> createImageViewPost(iv, bitmap)
+                iv -> imageLock.withLock{ createImageViewPost(iv, bitmap) }
             }
         }
     }
@@ -117,6 +121,6 @@ class VideoReceiverServiceTcp(private val ipAddress: String, private val port: I
     }
 
     override fun setImageView(imageView: ImageView) {
-        this.imageView = imageView
+        imageLock.withLock { this.imageView = imageView }
     }
 }
