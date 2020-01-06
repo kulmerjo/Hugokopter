@@ -16,7 +16,9 @@ class AsyncTcpClientImpl(private val ipAddress: String, private val port: Int)
 
     override fun run() {
         super.run()
-        serverSocket = Socket(ipAddress, port)
+        runCatching {
+            serverSocket = Socket(ipAddress, port)
+        }
     }
 
     override fun isConnected() : Boolean {
