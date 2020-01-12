@@ -6,10 +6,12 @@
 #include <PID.h>
 
 void Drone::initialize() {
-    left_prop.attach(4);
-    left_prop2.attach(5);
-    right_prop2.attach(6);
-    right_prop.attach(7); 
+    left_prop.attach(6);
+    left_prop2.attach(7);
+    right_prop2.attach(5);
+    right_prop.attach(4); 
+	setMotorsWhenDronIsOff();
+    setMotorPowers();
     accelGyro.Initialize();
     if (accelGyro.IsConnected()) {
         isWorking = 1;
@@ -20,29 +22,32 @@ void Drone::initialize() {
     pid_pitch.SetConstants(kp_pitch, kd_pitch, ki_pitch);
     pid_roll.SetConstants(kp_roll, kd_roll, ki_roll);
     pid_yaw.SetConstants(kp_yaw, kd_yaw, ki_yaw);
-    setMotorsWhenDronIsOff();
-    setMotorPowers(); 
 }
 
 void Drone::droneLoop() {
     Rotation rotation = accelGyro.GetRotation();
+	//Serial.print(rotation.x);
+	//Serial.print(" ");
+	//Serial.print(rotation.y);
+	//Serial.print(" ");
+	//Serial.println(rotation.z);
     rotationGuard(rotation);
     switch(state * isWorking) {
         case 0:
-            Serial.print("State 0 | ");
+            //Serial.print("State 0 | ");
             setMotorsWhenDronIsOff();
             break;
         case 1:
-            Serial.print("State 1 | ");
+            //Serial.print("State 1 | ");
             setMotorsWhenDronIsOn(rotation);
             break;
     }
-    printAllMotors();
+    //printAllMotors();
     setMotorPowers();
 }
 
 void Drone::rotationGuard(Rotation rotation) {
-    if (rotation.x > 20 || rotation.x < -20 || rotation.y > 20 || rotation.y < -20) {
+    if (rotation.x > 15.0 || rotation.x < -15.0 || rotation.y > 15.0 || rotation.y < -15.0) {
         state = 0;
     }
 }

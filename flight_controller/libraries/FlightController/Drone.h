@@ -9,13 +9,13 @@
 
 
 
-const float kp_pitch = 15;
+const float kp_pitch = 14;
 const float ki_pitch = 0.0;
-const float kd_pitch = 60;
+const float kd_pitch = 25;
 const double kp_roll = kp_pitch;
 const double ki_roll = ki_pitch;
 const double kd_roll = kd_pitch;
-const double kp_yaw = 1;
+const double kp_yaw = 0;
 const double ki_yaw = 0;
 const double kd_yaw = 0;
 ///////////////////////////////////////////////

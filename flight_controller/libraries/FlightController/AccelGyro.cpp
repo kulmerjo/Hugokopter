@@ -80,7 +80,7 @@ void SensorData::Add(SensorData sensorData) {
 }
 
 void AccelGyro::Initialize() {
-	_accelCorrection = Correction(0.0, 0.0, 0.0);
+	_accelCorrection = Correction(0.02, 0.0, 0.09);
 	_gyroCorrection = Correction(0.0, 0.0, 0.0);
 	_compFilterAlpha = 0.04;
 	_prevMeasurementTime = micros();

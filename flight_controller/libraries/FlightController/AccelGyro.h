@@ -23,7 +23,7 @@ const int GYRO_DATA_REG = 0x43;
 
 const int CHECK_CONN_REG = 0x75;
 
-const int CALIBRATION_SAMPLES = 200;
+const int CALIBRATION_SAMPLES = 600;
 
 class Rotation {
 public:
