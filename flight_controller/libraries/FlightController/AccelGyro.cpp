@@ -182,6 +182,11 @@ Rotation AccelGyro::GetRotation() {
 	_rotation.x = (1 - _compFilterAlpha) * (_rotation.x + rotationGyro.x) + _compFilterAlpha * rotationAccel.x;
 	_rotation.y = (1 - _compFilterAlpha) * (_rotation.y + rotationGyro.y) + _compFilterAlpha * rotationAccel.y;
 	_rotation.z += rotationGyro.z;
+	if(_rotation.z > 360){
+		_rotation.z = _rotation.z - 360;
+	}else if(_rotation.z < -360){
+		_rotation.z = _rotation.z + 360;
+	}
 	return _rotation;
 }
 
