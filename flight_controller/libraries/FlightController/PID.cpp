@@ -3,8 +3,8 @@
 
 PID::PID() {
 	SetConstants(1.0, 0.0, 0.0);
+	SetSampleTime(0ul);
 	SetDesiredValue(0.0);
-	SetSampleTime(50000ul);
 	SetOutputLimits(500.0, -500.0);
 	ResetValues();
 }
@@ -19,8 +19,8 @@ PID::PID(float kp, float kd, float ki, float desiredValue, unsigned long sampleT
 
 PID::PID(float kp, float kd, float ki) {
 	SetConstants(kp, kd, ki);
+	SetSampleTime(0ul);
 	SetDesiredValue(0.0);
-	SetSampleTime(50000ul);
 	SetOutputLimits(500.0, -500.0);
 	ResetValues();
 }
@@ -69,7 +69,7 @@ float PID::Update(float actualValue) {
 	float elapsedTimeInSeconds;
 	actualTime = micros();
 	elapsedTime = actualTime - _lastUpdateTime;
-	if (elapsedTime < _sampleTime && _outputCalculated) {
+	if (elapsedTime <= _sampleTime && _outputCalculated) {
 		return _lastOutput;
 	}
 	elapsedTimeInSeconds = elapsedTime / microsecondsInSecond;
